@@ -1,0 +1,44 @@
+provider "aws" {
+  version = "~> 1.0"
+  region  = "us-east-1"
+}
+
+variable "backend_bucket" {}
+
+module "backend" {
+  /*
+   * Since this example lives in the module repository,
+   * we use a relative path '../', but typically we would use
+   * the github url, like so:
+   *
+   * source = "github.com/samstav/tf_backend_aws"
+  */
+
+  source         = "../"
+  backend_bucket = "${var.backend_bucket}"
+}
+
+#
+# Just to demonstrate...
+#
+
+output "s3_backend_bucket_name" {
+  value = "${module.backend.s3_backend_bucket_name}"
+}
+
+output "dynamodb_lock_table_name" {
+  value = "${module.backend.dynamodb_lock_table_name}"
+}
+
+output "dynamodb_lock_table_arn" {
+  value = "${module.backend.dynamodb_lock_table_arn}"
+}
+
+output "dynamodb_lock_stream_arn" {
+  value = "${module.backend.dynamodb_lock_stream_arn}"
+}
+
+output "dynamodb_lock_stream_label" {
+  value = "${module.backend.dynamodb_lock_stream_label}"
+}
+
