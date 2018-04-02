@@ -5,7 +5,7 @@ Bootstrap your project whose resources will be managed by terraform:
 
 ```hcl
 module "backend" {
-  source = "github.com/samstav/tf_backend_aws"
+  source = "github.com/samstav/terraform-aws-backend"
   backend_bucket = "terraform-state-bucket" 
 }
 ```

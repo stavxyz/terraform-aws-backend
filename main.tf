@@ -1,5 +1,5 @@
 /*
- * Module: tf_backend_aws
+ * Module: terraform-aws-backend
  *
  * Bootstrap your terraform backend on AWS.
  *
@@ -17,14 +17,14 @@
  *   - https://www.terraform.io/docs/configuration/variables.html
  *
  * If using an existing S3 Bucket, perform a terraform import on your bucket
- * into your tf_backend_aws module instance:
+ * into your terraform-aws-backend module instance:
  *
  * $ terraform import module.backend.aws_s3_bucket.tf_backend_bucket <your_s3_bucket_name>
  *
  * where the 'backend' portion is the name you choose:
  *
  * module "backend" {
- *   source = "github.com/samstav/tf_backend_aws"
+ *   source = "github.com/samstav/terraform-aws-backend"
  * }
  *
  */
@@ -51,7 +51,7 @@ resource "aws_dynamodb_table" "tf_backend_state_lock_table" {
   tags {
     Description = "Terraform state locking table for account ${data.aws_caller_identity.current.account_id}."
     ManagedByTerraform = "true"
-    TerraformModule = "tf_backend_aws"
+    TerraformModule = "terraform-aws-backend"
   }
 
   lifecycle {
@@ -73,7 +73,7 @@ resource "aws_s3_bucket" "tf_backend_bucket" {
   tags {
     Description = "Terraform S3 Backend bucket which stores the terraform state for account ${data.aws_caller_identity.current.account_id}."
     ManagedByTerraform = "true"
-    TerraformModule = "tf_backend_aws"
+    TerraformModule = "terraform-aws-backend"
   }
   lifecycle {
     prevent_destroy = true
@@ -89,7 +89,7 @@ resource "aws_s3_bucket" "tf_backend_logs_bucket" {
   tags {
     Purpose = "Logging bucket for ${var.backend_bucket}"
     ManagedByTerraform = "true"
-    TerraformModule = "tf_backend_aws"
+    TerraformModule = "terraform-aws-backend"
   }
   lifecycle {
     prevent_destroy = true

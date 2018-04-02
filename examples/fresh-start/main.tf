@@ -11,7 +11,7 @@ module "backend" {
    * we use a relative path '../', but typically we would use
    * the github url, like so:
    *
-   * source = "github.com/samstav/tf_backend_aws"
+   * source = "github.com/samstav/terraform-aws-backend"
   */
 
   source         = "../"

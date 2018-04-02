@@ -1,5 +1,5 @@
 /*
- * Module: tf_backend_aws
+ * Module: terraform-aws-backend
  *
  * Outputs:
  *   - s3_backend_bucket_name
