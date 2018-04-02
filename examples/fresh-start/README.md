@@ -1,4 +1,8 @@
-## tf_backend_aws example
+## terraform-aws-backend fresh start example
+
+In this example, we assume no existing backend resources. That is,
+we will create our s3 bucket(s) and dynamodb lock table from
+scratch without doing any `terraform import`s.
 
 To run this example:
 
