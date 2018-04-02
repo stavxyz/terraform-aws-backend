@@ -1,4 +1,4 @@
-# tf_backend_aws
+# terraform-aws-backend
 terraform backend resources managed by terraform.
 
 Bootstrap your project whose resources will be managed by terraform:
