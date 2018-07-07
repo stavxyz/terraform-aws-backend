@@ -60,11 +60,11 @@ See variables available for module configuration
 https://github.com/samstav/terraform-aws-backend/blob/master/variables.tf
 
 
-## Bootstrapping your project
+# Bootstrapping your project
 
 A quick preface: For the purposes of this intro, we'll use a bucket named `terraform-state-bucket`, but you'll want to choose an appropriate name for the s3 bucket in which terraform will store your infrastructure state. Perhaps something like `terraform-state-<your_project-name>`, or, if you store all of your terraform state for all projects in a single bucket, `jacks-smirking-tf-state-bucket` with a `key` that defines a path/key name which is more project specific such as `states/projectX-terraform.tfstate`. 
 
-#### describe your terraform backend resources
+### describe your terraform backend resources
 
 The following code 
 ```hcl
@@ -98,6 +98,10 @@ terraform init -reconfigure \
     -backend-config="dynamodb_table=terraform-lock"
 ```
 
+### Writing your terraform configuration
+
+https://www.terraform.io/docs/configuration/terraform.html
+
 Instead of using the `echo` command above in Step 5 (provided only for proof of concept), you can just write your terraform config into one of your \*.tf files. Otherwise you'll end up needing to provide the `-backend-config` [parameters partial configuration](https://www.terraform.io/docs/backends/config.html#partial-configuration) every single time you run `terraform init` (which might be often).
 
 ```hcl
@@ -109,3 +113,9 @@ terraform {
   }
 }
 ```
+
+### Reconfiguring terraform after building your backend resources
+
+Terraform might ask you if you want to copy your existing state. You probably do:
+
+![yes](http://g.samstav.xyz/bgs7hwsiqa.png)
