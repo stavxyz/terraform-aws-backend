@@ -10,45 +10,65 @@ https://www.terraform.io/docs/backends/types/s3.html
 Options and configuration for this module are exposed via terraform variables.
 
 
-#### backend_bucket
+#### `backend_bucket`
 
-This is the only variable which has no default but is required. You will need to define this value. 
+This is the only variable which has no default but is required. You will need to define this value in your terraform-aws-backend module block. There are a few ways to do this, here's a couple:
 
-#### dynamodb_lock_table_enabled
+```hcl
+module "backend" {
+  source = "github.com/samstav/terraform-aws-backend"
+  backend_bucket = "terraform-state-bucket"
+}
+```
 
-_Defaults to true._
+OR
+
+```hcl
+variable "backend_bucket" {
+  default = "terraform-state-bucket"
+}
+
+module "backend" {
+  source = "github.com/samstav/terraform-aws-backend"
+  backend_bucket = "${var.backend_bucket}"
+}
+```
+
+#### `dynamodb_lock_table_enabled`
+
+_Defaults to `true`._
 
 - Set to false or 0 to prevent this module from creating the DynamoDB table to use for terraform state locking and consistency. More info on locking for aws/s3 backends: https://www.terraform.io/docs/backends/types/s3.html. More information about how terraform handles booleans here: https://www.terraform.io/docs/configuration/variables.html"
 }
 
-#### dynamodb_lock_table_stream_enabled
+#### `dynamodb_lock_table_stream_enabled`
 
-_Defaults to false._
+_Defaults to `false`._
 
 Affects terraform-aws-backend module behavior. Set to false or 0 to disable DynamoDB Streams for the table. More info on DynamoDB streams: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html. More information about how terraform handles booleans here: https://www.terraform.io/docs/configuration/variables.html
 
 
-#### dynamodb_lock_table_stream_view_type
+#### `dynamodb_lock_table_stream_view_type`
 
 _Defaults to `NEW_AND_OLD_IMAGES`_
 
 Only applies if `dynamodb_lock_table_stream_enabled` is true.
 
-#### dynamodb_lock_table_name
+#### `dynamodb_lock_table_name`
 
 _Defaults to `terraform-lock`_
 
 The name of your [terraform state locking](https://www.terraform.io/docs/state/locking.html) DynamoDB Table.
 
-#### lock_table_read_capacity
+#### `lock_table_read_capacity`
 
-_Defaults to 1 Read Capacity Unit._
+_Defaults to `1` Read Capacity Unit._
 
 More on DynamoDB Capacity Units: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
 
 
-#### lock_table_write_capacity
-_Defaults to 1 Write Capacity Unit._
+#### `lock_table_write_capacity`
+_Defaults to `1` Write Capacity Unit._
 
 More on DynamoDB Capacity Units: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
 
