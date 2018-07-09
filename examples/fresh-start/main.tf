@@ -14,7 +14,7 @@ module "backend" {
    * source = "github.com/samstav/terraform-aws-backend"
   */
 
-  source         = "../"
+  source         = "../../"
   backend_bucket = "${var.backend_bucket}"
 }
 
