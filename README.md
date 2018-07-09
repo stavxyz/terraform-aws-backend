@@ -62,7 +62,14 @@ https://github.com/samstav/terraform-aws-backend/blob/master/variables.tf
 
 # Bootstrapping your project
 
-A quick preface: For the purposes of this intro, we'll use a bucket named `terraform-state-bucket`, but you'll want to choose an appropriate name for the s3 bucket in which terraform will store your infrastructure state. Perhaps something like `terraform-state-<your_project-name>`, or, if you store all of your terraform state for all projects in a single bucket, `jacks-smirking-tf-state-bucket` with a `key` that defines a path/key name which is more project specific such as `states/projectX-terraform.tfstate`. 
+### a note on state bucket and s3 key naming
+
+For the purposes of this intro, we'll use a bucket named `terraform-state-bucket`, but you'll want to choose an appropriate name for the s3 bucket in which terraform will store your infrastructure state. Perhaps something like `terraform-state-<your_project-name>`, or, if you store all of your terraform state for all projects in a single bucket, `bucket-with-all-of-my-tf-states` along with a `key` that defines a path/key name which is more project specific such as `states/project-x-terraform.tfstate`. 
+
+### postpone writing your terraform configuration block
+
+In order to bootstrap your project with this module/setup, you will need to wait until **after** Step 4 (below) to write your [terraform configuration block](https://www.terraform.io/docs/configuration/terraform.html) into one of your `.tf` files. The one that looks like this `terraform {}`.
+
 
 ### describe your terraform backend resources
 
@@ -70,9 +77,13 @@ The following code
 ```hcl
 module "backend" {
   source = "github.com/samstav/terraform-aws-backend"
-  backend_bucket = "terraform-state-bucket" 
+  backend_bucket = "terraform-state-bucket"
+  # if you dont want a dynamodb lock table, uncomment this:
+  # dynamodb_lock_table_enabled = false
 }
 ```
+
+### commands are the fun part
 
 The following commands will get you up and running:
 ```bash
@@ -90,15 +101,17 @@ terraform apply backend.plan
 # Step 5: Only after applying (building) the backend resources, write our terraform config
 # Now we can write the terraform backend configuration into our project
 # Instead of this command, you can write the terraform config block into any of your .tf files
+# Please see "writing your terraform configuration" below for more info
 echo 'terraform { backend "s3" {} }' > conf.tf
 # Step 6: Reinitialize terraform to use your newly provisioned backend
 terraform init -reconfigure \
     -backend-config="bucket=terraform-state-bucket" \
     -backend-config="key=states/terraform.tfstate" \
+    # leave this next line out if you dont want to use a tf lock
     -backend-config="dynamodb_table=terraform-lock"
 ```
 
-### Writing your terraform configuration
+### writing your terraform configuration
 
 https://www.terraform.io/docs/configuration/terraform.html
 
@@ -114,7 +127,7 @@ terraform {
 }
 ```
 
-### Reconfiguring terraform after building your backend resources
+### reconfiguring terraform after building your backend resources
 
 Terraform might ask you if you want to copy your existing state. You probably do:
 
