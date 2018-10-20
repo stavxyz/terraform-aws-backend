@@ -49,6 +49,20 @@ module "backend" {
 }
 ```
 
+### using existing resources (instead of creating new ones)
+
+#### re-using a dynamodb lock table across terraform-managed projects
+
+One of the resources created and managed by this module is the dynamodb table for [terraform locking](https://www.terraform.io/docs/state/locking.html). It has a default name of `terraform-lock`, and this table may be re-used across many different projects which using terraform for infrastructure management. In the case that you already have a DynamoDB table you would like to use for locking (or perhaps you are already using this module in another project), you can import that dynamodb table:
+
+```
+$ terraform import module.backend.aws_dynamodb_table.tf_backend_state_lock_table[0] terraform-lock
+```
+
+_(The `[0]` is needed because it is a "conditional resource" and you must refer to the 'count' index when importing, which is always `[0]`)_
+
+Where `backend` is your chosen `terraform-aws-backend` module instance name, and `terraform-lock` is the DynamoDB table name you use for tf state locking.
+
 ### commands are the fun part
 
 The following commands will get you up and running:
