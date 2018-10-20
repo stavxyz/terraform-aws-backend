@@ -33,6 +33,10 @@ For the purposes of this intro, we'll use a bucket named `terraform-state-bucket
 
 In order to bootstrap your project with this module/setup, you will need to wait until **after** Step 4 (below) to write your [terraform configuration block](https://www.terraform.io/docs/configuration/terraform.html) into one of your `.tf` files. (Your "terraform configuration block" is the one that looks like this `terraform {}`.)
 
+If you are updating an existing terraform-managed project, or you already wrote your `terraform {...}` block into one of your `.tf` files, you will run into the following error on Step 3 (`terraform plan`):
+
+![reinit required error](http://g.samstav.xyz/av5vyblbwq.png)
+
 
 ### describe your terraform backend resources
  
