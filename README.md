@@ -51,7 +51,7 @@ module "backend" {
 
 ### if using _existing_ backend resources (instead of creating new ones)
 
-#### re-using a DynamoDB lock table across terraform-managed projects
+#### re-using a DynamoDB lock table across multiple terraform-managed projects
 
 One of the resources created and managed by this module is the DynamoDB Table for [terraform locking](https://www.terraform.io/docs/state/locking.html). This module provides a default name: `terraform-lock`. This table may actually be re-used across multiple different projects. In the case that you already have a DynamoDB table you would like to use for locking (or perhaps you are already using this module in another project), you can simply import that dynamodb table:
 
