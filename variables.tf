@@ -25,3 +25,8 @@ variable "lock_table_read_capacity" {
 variable "lock_table_write_capacity" {
   default = 1
 }
+
+variable "s3_state_encryption_enabled" {
+  default = 1
+  description = "Affects terraform-aws-backend module behavior. Set to false or 0 to prevent this module from creating a KMS key and requiring server side encryption and encrypted transport. More information on KMS keys: https://docs.aws.amazon.com/kms/latest/developerguide/getting-started.html. More information on S3 encryption: https://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html More information about how terraform handles booleans here: https://www.terraform.io/docs/configuration/variables.html"
+}

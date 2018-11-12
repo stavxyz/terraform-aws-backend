@@ -46,6 +46,7 @@ module "backend" {
   backend_bucket = "terraform-state-bucket"
   # using options, e.g. if you dont want a dynamodb lock table, uncomment this:
   # dynamodb_lock_table_enabled = false
+  # s3_state_encryption_enabled = false
 }
 ```
 
