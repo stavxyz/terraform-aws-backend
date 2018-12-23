@@ -26,4 +26,13 @@ variable "lock_table_write_capacity" {
   default = 1
 }
 
+variable "sse_algorithm" {
+  default = "aws:kms"
+  description = "The server-side encryption algorithm to use for the tf state s3 bucket. Valid values are AES256 and aws:kms"
+}
+
+variable "kms_key_id" {
+  # Default to absent/blank to use the default aws/s3 aws kms master key
+  default = ""
+  description = "The AWS KMS master key ID used for the SSE-KMS encryption on the tf state s3 bucket. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent (the default) while the sse_algorithm is aws:kms."
 }
