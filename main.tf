@@ -116,41 +116,54 @@ resource "aws_s3_bucket" "tf_backend_bucket_encrypted" {
   }
 }
 
-resource "aws_s3_bucket_policy" "terraform_state" {
-  count  = "${var.s3_state_encryption_enabled ? 1 : 0}"
-  bucket = "${aws_s3_bucket.tf_backend_bucket_encrypted.id}"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Id": "RequireEncryption",
-   "Statement": [
-    {
-      "Sid": "RequireEncryptedTransport",
-      "Effect": "Deny",
-      "Action": ["s3:*"],
-      "Resource": ["arn:aws:s3:::${aws_s3_bucket.tf_backend_bucket_encrypted.bucket}/*"],
-      "Condition": {
-        "Bool": {
-          "aws:SecureTransport": "false"
-        }
-      },
-      "Principal": "*"
-    },
-    {
-      "Sid": "RequireEncryptedStorage",
-      "Effect": "Deny",
-      "Action": ["s3:PutObject"],
-      "Resource": ["arn:aws:s3:::${aws_s3_bucket.tf_backend_bucket_encrypted.bucket}/*"],
-      "Condition": {
-        "StringNotEquals": {
-          "s3:x-amz-server-side-encryption": "AES256"
-        }
-      },
-      "Principal": "*"
+data "aws_iam_policy_document" "tf_backend_bucket_policy" {
+  statement {
+    sid = "RequireEncryptedTransport"
+    effect = "Deny"
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "${aws_s3_bucket.tf_backend_bucket_encrypted.arn}/*"
+    ]
+    condition {
+      test = "Bool"
+      variable = "aws:SecureTransport"
+      values = [
+        false,
+      ]
     }
-  ]
+    principals = [
+      "*",
+    ]
+  }
+
+  statement {
+    sid = "RequireEncryptedStorage"
+    effect = "Deny"
+    actions = [
+      "s3:PutObject",
+    ]
+    resources = [
+      "${aws_s3_bucket.tf_backend_bucket_encrypted.arn}/*"
+    ]
+    condition {
+      test = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values = [
+        "AES256"
+      ]
+    }
+    principals = [
+      "*",
+    ]
+  }
 }
-EOF
+
+
+resource "aws_s3_bucket_policy" "tf_backend_bucket_policy" {
+  bucket = "${aws_s3_bucket.tf_backend_bucket.id}"
+  policy = "${data.aws_iam_policy_document.tf_backend_bucket_policy.json}"
 }
 
 resource "aws_s3_bucket" "tf_backend_logs_bucket" {
