@@ -61,7 +61,6 @@ resource "aws_dynamodb_table" "tf_backend_state_lock_table" {
 }
 
 resource "aws_s3_bucket" "tf_backend_bucket" {
-  count = "${var.s3_state_encryption_enabled ? 0 : 1}"
   bucket = "${var.backend_bucket}"
   acl = "private"
   versioning {
@@ -76,40 +75,13 @@ resource "aws_s3_bucket" "tf_backend_bucket" {
     ManagedByTerraform = "true"
     TerraformModule = "terraform-aws-backend"
   }
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_kms_key" "tf_backend_bucket_key" {
-    count                   = "${var.s3_state_encryption_enabled ? 1 : 0}"
-  description             = "This key is used to encrypt the terraform state s3 bucket"
-  deletion_window_in_days = 10
-}
-
-resource "aws_s3_bucket" "tf_backend_bucket_encrypted" {
-  count  = "${var.s3_state_encryption_enabled ? 1 : 0}"
-  bucket = "${var.backend_bucket}"
-  acl    = "private"
-  versioning {
-    enabled = true
-  }
-  logging {
-    target_bucket = "${aws_s3_bucket.tf_backend_logs_bucket.id}"
-    target_prefix = "log/"
-  }
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = "${aws_kms_key.tf_backend_bucket_key.arn}"
-        sse_algorithm     = "aws:kms"
+        kms_master_key_id = "${var.kms_key_id}"
+        sse_algorithm     = "${var.sse_algorithm}"
       }
     }
-  }
-  tags {
-    Description = "Terraform S3 Backend bucket which stores the terraform state for account ${data.aws_caller_identity.current.account_id}."
-    ManagedByTerraform = "true"
-    TerraformModule = "terraform-aws-backend"
   }
   lifecycle {
     prevent_destroy = true
