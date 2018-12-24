@@ -26,7 +26,13 @@ variable "lock_table_write_capacity" {
   default = 1
 }
 
-variable "s3_state_encryption_enabled" {
-  default = 1
-  description = "Affects terraform-aws-backend module behavior. Set to false or 0 to prevent this module from creating a KMS key and requiring server side encryption and encrypted transport. More information on KMS keys: https://docs.aws.amazon.com/kms/latest/developerguide/getting-started.html. More information on S3 encryption: https://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html More information about how terraform handles booleans here: https://www.terraform.io/docs/configuration/variables.html"
+variable "sse_algorithm" {
+  default = "aws:kms"
+  description = "The server-side encryption algorithm to use for the tf state s3 bucket. Valid values are AES256 and aws:kms"
+}
+
+variable "kms_key_id" {
+  # Default to absent/blank to use the default aws/s3 aws kms master key
+  default = ""
+  description = "The AWS KMS master key ID used for the SSE-KMS encryption on the tf state s3 bucket. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent (the default) while the sse_algorithm is aws:kms."
 }
