@@ -156,3 +156,6 @@ resource "aws_s3_bucket" "tf_backend_logs_bucket" {
   }
 }
 
+data "aws_kms_key" "master" {
+  key_id = "alias/aws/s3"
+}

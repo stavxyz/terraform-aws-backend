@@ -7,6 +7,7 @@
  *   - dynamodb_lock_table_arn
  *   - dynamodb_lock_table_stream_arn
  *   - dynamodb_lock_table_stream_label
+ *   - s3_kms_key_id
  *
  */
 
@@ -28,4 +29,8 @@ output "dynamodb_lock_stream_arn" {
 
 output "dynamodb_lock_stream_label" {
   value = "${aws_dynamodb_table.tf_backend_state_lock_table.*.stream_label}"
+}
+
+output "s3_kms_key_id" {
+  value = "${var.kms_key_id == "" ? var.kms_key_id : data.aws_kms_key.master.arn}"
 }

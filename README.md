@@ -91,7 +91,7 @@ terraform init -backend=false
 terraform plan -out=backend.plan -target=module.backend
 # Step 4: Apply the infrastructure plan
 terraform apply backend.plan
-# Step 5: Only after applying (building) the backend resources, write our terraform config
+# Step 5: Only after applying (building) the backend resources, write our terraform config. use the terraform apply output to find your kms key id, and substitude it into the command below.
 # Now we can write the terraform backend configuration into our project
 # Instead of this command, you can write the terraform config block into any of your .tf files
 # Please see "writing your terraform configuration" below for more info
@@ -100,6 +100,8 @@ echo 'terraform { backend "s3" {} }' > conf.tf
 terraform init -reconfigure \
     -backend-config="bucket=terraform-state-bucket" \
     -backend-config="key=states/terraform.tfstate" \
+    -backend-config="encrypt=1" \
+    -backend-config="kms_key_id=YOUR_KMS_KEY_ID" \
     # leave this next line out if you dont want to use a tf lock
     -backend-config="dynamodb_table=terraform-lock"
 ```
@@ -116,6 +118,8 @@ terraform {
     bucket = "terraform-state-bucket"
     key = "states/terraform.tfstate"
     dynamodb_table = "terraform-lock"
+    encrypt = "true"
+    kms_key_id = "YOUR_KMS_KEY_ID"
   }
 }
 ```
