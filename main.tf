@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "tf_backend_bucket_policy" {
       "s3:*",
     ]
     resources = [
-      "${aws_s3_bucket.tf_backend_bucket_encrypted.arn}/*"
+      "${aws_s3_bucket.tf_backend_bucket.arn}/*"
     ]
     condition {
       test = "Bool"
@@ -117,7 +117,7 @@ data "aws_iam_policy_document" "tf_backend_bucket_policy" {
       "s3:PutObject",
     ]
     resources = [
-      "${aws_s3_bucket.tf_backend_bucket_encrypted.arn}/*"
+      "${aws_s3_bucket.tf_backend_bucket.arn}/*"
     ]
     condition {
       test = "StringNotEquals"
