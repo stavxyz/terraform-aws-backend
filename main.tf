@@ -105,9 +105,10 @@ data "aws_iam_policy_document" "tf_backend_bucket_policy" {
         false,
       ]
     }
-    principals = [
-      "*",
-    ]
+    principals {
+      type = "*"
+      identifiers = ["*"]
+    }
   }
 
   statement {
@@ -126,9 +127,10 @@ data "aws_iam_policy_document" "tf_backend_bucket_policy" {
         "${var.sse_algorithm}"
       ]
     }
-    principals = [
-      "*",
-    ]
+    principals {
+      type = "*"
+      identifiers = ["*"]
+    }
   }
 }
 
