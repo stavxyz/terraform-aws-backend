@@ -123,7 +123,7 @@ data "aws_iam_policy_document" "tf_backend_bucket_policy" {
       test = "StringNotEquals"
       variable = "s3:x-amz-server-side-encryption"
       values = [
-        "AES256"
+        "${var.sse_algorithm}"
       ]
     }
     principals = [
