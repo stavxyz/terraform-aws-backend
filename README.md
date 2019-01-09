@@ -91,7 +91,7 @@ terraform init -backend=false
 terraform plan -out=backend.plan -target=module.backend
 # Step 4: Apply the infrastructure plan
 terraform apply backend.plan
-# Step 5: Only after applying (building) the backend resources, write our terraform config. use the terraform apply output to find your kms key id, and substitude it into the command below.
+# Step 5: Only after applying (building) the backend resources, write our terraform config.
 # Now we can write the terraform backend configuration into our project
 # Instead of this command, you can write the terraform config block into any of your .tf files
 # Please see "writing your terraform configuration" below for more info
