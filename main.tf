@@ -79,7 +79,7 @@ resource "aws_s3_bucket" "tf_backend_bucket" {
     rule {
       apply_server_side_encryption_by_default {
         kms_master_key_id = "${var.kms_key_id}"
-        sse_algorithm     = "${var.sse_algorithm}"
+        sse_algorithm     = "${var.kms_key_id == "" ? "AES256" : "aws:kms"}"
       }
     }
   }
@@ -124,7 +124,7 @@ data "aws_iam_policy_document" "tf_backend_bucket_policy" {
       test = "StringNotEquals"
       variable = "s3:x-amz-server-side-encryption"
       values = [
-        "${var.sse_algorithm}"
+        "${var.kms_key_id == "" ? "AES256" : "aws:kms" }"
       ]
     }
     principals {
@@ -154,8 +154,4 @@ resource "aws_s3_bucket" "tf_backend_logs_bucket" {
   lifecycle {
     prevent_destroy = true
   }
-}
-
-data "aws_kms_key" "master" {
-  key_id = "alias/aws/s3"
 }

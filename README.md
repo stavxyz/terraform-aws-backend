@@ -101,7 +101,6 @@ terraform init -reconfigure \
     -backend-config="bucket=terraform-state-bucket" \
     -backend-config="key=states/terraform.tfstate" \
     -backend-config="encrypt=1" \
-    -backend-config="kms_key_id=YOUR_KMS_KEY_ID" \
     # leave this next line out if you dont want to use a tf lock
     -backend-config="dynamodb_table=terraform-lock"
 ```
@@ -119,7 +118,6 @@ terraform {
     key = "states/terraform.tfstate"
     dynamodb_table = "terraform-lock"
     encrypt = "true"
-    kms_key_id = "YOUR_KMS_KEY_ID"
   }
 }
 ```
@@ -197,6 +195,10 @@ _Defaults to `1` Write Capacity Unit._
 
 More on DynamoDB Capacity Units: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
 
+#### `kms_key_id`
+_Defaults to ``._
+
+Encryption key to use for encrypting the terraform remote state s3 bucket. If not specified, then AWS-S3 encryption key management method will be used, which uses keys derived from the account master kms key. If specified, then AWS-KMS encryption key management method will be used. If the kms_key_id is specified, then you must specify the backend config option `kms_key_id`. More on s3 bucket server side encryption: https://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html and https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
 
 ### terraform-aws-backend terraform variables
 
