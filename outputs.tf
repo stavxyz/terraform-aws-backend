@@ -7,11 +7,12 @@
  *   - dynamodb_lock_table_arn
  *   - dynamodb_lock_table_stream_arn
  *   - dynamodb_lock_table_stream_label
+ *   - s3_kms_key_id
  *
  */
 
 output "s3_backend_bucket_name" {
-  value = "${aws_s3_bucket.tf_backend_bucket.id}"
+  value = "${ join("", aws_s3_bucket.tf_backend_bucket.*.id, aws_s3_bucket.tf_backend_bucket.*.id)}"
 }
 
 output "dynamodb_lock_table_name" {
