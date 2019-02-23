@@ -1,3 +1,8 @@
+variable "region" {
+  type = "string"
+  description = "AWS region"
+}
+
 variable "backend_bucket" {}
 
 variable "dynamodb_lock_table_enabled" {

@@ -33,6 +33,10 @@ terraform {
   required_version = ">= 0.9.0"
 }
 
+provider "aws" {
+  region = "${var.region}"
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_dynamodb_table" "tf_backend_state_lock_table" {
