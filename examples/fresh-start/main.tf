@@ -1,9 +1,5 @@
-provider "aws" {
-  version = "~> 1.0"
-  region  = "us-east-1"
+variable "backend_bucket" {
 }
-
-variable "backend_bucket" {}
 
 module "backend" {
   /*
@@ -15,7 +11,7 @@ module "backend" {
   */
 
   source         = "../../"
-  backend_bucket = "${var.backend_bucket}"
+  backend_bucket = var.backend_bucket
 }
 
 #
@@ -23,22 +19,22 @@ module "backend" {
 #
 
 output "s3_backend_bucket_name" {
-  value = "${module.backend.s3_backend_bucket_name}"
+  value = module.backend.s3_backend_bucket_name
 }
 
 output "dynamodb_lock_table_name" {
-  value = "${module.backend.dynamodb_lock_table_name}"
+  value = module.backend.dynamodb_lock_table_name
 }
 
 output "dynamodb_lock_table_arn" {
-  value = "${module.backend.dynamodb_lock_table_arn}"
+  value = module.backend.dynamodb_lock_table_arn
 }
 
 output "dynamodb_lock_stream_arn" {
-  value = "${module.backend.dynamodb_lock_stream_arn}"
+  value = module.backend.dynamodb_lock_stream_arn
 }
 
 output "dynamodb_lock_stream_label" {
-  value = "${module.backend.dynamodb_lock_stream_label}"
+  value = module.backend.dynamodb_lock_stream_label
 }
 
