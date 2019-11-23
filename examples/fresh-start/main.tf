@@ -1,6 +1,11 @@
 variable "backend_bucket" {
 }
 
+provider "aws" {
+  version = "~> 2.39"
+  region  = "us-east-1"
+}
+
 module "backend" {
   /*
    * Since this example lives in the module repository,
