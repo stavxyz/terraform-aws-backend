@@ -7,7 +7,6 @@ scratch without doing any `terraform import`s.
 To run this example:
 
 ```
-terraform get -update
 terraform init -backend=false
 terraform plan -out=backend.plan -target=module.backend -var 'backend_bucket=tf-backend-aws-example'
 terraform apply backend.plan
