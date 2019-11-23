@@ -29,10 +29,6 @@
  *
  */
 
-terraform {
-  required_version = ">= 0.9.0"
-}
-
 data "aws_caller_identity" "current" {
 }
 
