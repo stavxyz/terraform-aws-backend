@@ -3,7 +3,7 @@ variable "backend_bucket" {
 
 provider "aws" {
   version = "~> 2.39"
-  region  = "us-east-1"
+  region  = "us-west-2"
 }
 
 module "backend" {
@@ -42,4 +42,3 @@ output "dynamodb_lock_stream_arn" {
 output "dynamodb_lock_stream_label" {
   value = module.backend.dynamodb_lock_stream_label
 }
-
