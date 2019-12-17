@@ -27,7 +27,7 @@ Your resulting terraform configuration block will refer to the resources created
 
 ### a note on state bucket and s3 key naming
 
-For the purposes of this intro, we'll use a bucket named `terraform-state-bucket`, but you'll want to choose an appropriate name for the s3 bucket in which terraform will store your infrastructure state. Perhaps something like `terraform-state-<your_project-name>`, or, if you store all of your terraform state for all projects in a single bucket, `bucket-with-all-of-my-tf-states` along with a `key` that defines a path/key name which is more project specific such as `states/project-x-terraform.tfstate`. 
+For the purposes of this intro, we'll use a bucket named `terraform-state-bucket`, but you'll want to choose an appropriate name for the s3 bucket in which terraform will store your infrastructure state. Perhaps something like `terraform-state-<your_project-name>`, or, if you store all of your terraform state for all projects in a single bucket, `bucket-with-all-of-my-tf-states` along with a `key` that defines a path/key name which is more project specific such as `states/project-x-terraform.tfstate`.
 
 ### postpone writing your terraform configuration block
 
@@ -39,7 +39,7 @@ If you are updating an existing terraform-managed project, or you already wrote 
 
 
 ### describe your terraform backend resources
- 
+
 ```hcl
 module "backend" {
   source = "github.com/samstav/terraform-aws-backend"
@@ -55,11 +55,15 @@ module "backend" {
 
 One of the resources created and managed by this module is the DynamoDB Table for [terraform locking](https://www.terraform.io/docs/state/locking.html). This module provides a default name: `terraform-lock`. This table may actually be re-used across multiple different projects. In the case that you already have a DynamoDB table you would like to use for locking (or perhaps you are already using this module in another project), you can simply import that dynamodb table:
 
-```
+```console
+# If you are running Terraform at >=0.12.*...
+$ terraform import module.backend.aws_dynamodb_table.tf_backend_state_lock_table terraform-lock
+
+# ...or if you are running it at <0.12.*
 $ terraform import module.backend.aws_dynamodb_table.tf_backend_state_lock_table[0] terraform-lock
 ```
 
-_(The `[0]` is needed because it is a "conditional resource" and you must refer to the 'count' index when importing, which is always `[0]`)_
+_(The `[0]` is needed in <0.12.* because it is a "conditional resource" and you must refer to the 'count' index when importing, which is always `[0]`)_
 
 Where `backend` is your chosen `terraform-aws-backend` module instance name, and `terraform-lock` is the DynamoDB table name you use for tf state locking.
 
@@ -205,5 +209,3 @@ Encryption key to use for encrypting the terraform remote state s3 bucket. If no
 See variables available for module configuration
 
 https://github.com/samstav/terraform-aws-backend/blob/master/variables.tf
-
-
