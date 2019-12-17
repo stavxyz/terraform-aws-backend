@@ -55,7 +55,7 @@ module "backend" {
 
 One of the resources created and managed by this module is the DynamoDB Table for [terraform locking](https://www.terraform.io/docs/state/locking.html). This module provides a default name: `terraform-lock`. This table may actually be re-used across multiple different projects. In the case that you already have a DynamoDB table you would like to use for locking (or perhaps you are already using this module in another project), you can simply import that dynamodb table:
 
-```console
+```bash
 # If you are running Terraform at >=0.12.*...
 $ terraform import module.backend.aws_dynamodb_table.tf_backend_state_lock_table terraform-lock
 
