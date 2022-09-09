@@ -1,9 +1,9 @@
 variable "backend_bucket" {
 }
 
+
 provider "aws" {
-  version = "~> 2.39"
-  region  = "us-west-2"
+      region  = "us-west-2"
 }
 
 module "backend" {
