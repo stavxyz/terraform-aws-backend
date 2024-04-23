@@ -141,6 +141,14 @@ resource "aws_s3_bucket" "tf_backend_logs_bucket" {
   versioning {
     enabled = true
   }
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        kms_master_key_id = var.kms_key_id
+        sse_algorithm     = var.kms_key_id == "" ? "AES256" : "aws:kms"
+      }
+    }
+  }
   tags = {
     Purpose            = "Logging bucket for ${var.backend_bucket}"
     ManagedByTerraform = "true"
